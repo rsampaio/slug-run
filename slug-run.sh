@@ -31,13 +31,17 @@ function unpackSlug() {
 }
 
 function startSlug() {
+  export PROCESS_TYPE=${PROCESS_TYPE:-web}
   export HOME=/app
   cd $HOME
-  source .profile.d/*.sh
-  PROCESS_TYPE=${PROCESS_TYPE:-web}
+  for i in $HOME/.profile.d/*.sh; do
+    source $i
+  done
+
   if [[ "$ENV_FILE" != "" ]]; then
-	WITH_ENV="-e ${ENV_FILE}"
+	  WITH_ENV="-e ${ENV_FILE}"
   fi
+
   forego start $WITH_ENV $PROCESS_TYPE
 }
 
